@@ -1,7 +1,6 @@
 package fr.sewatech.demo.rest;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -54,16 +53,23 @@ public class MessageEndpoint {
 	}
 
 	@GET
-	@Path("all")
-	public List<Message> listAll() {
-		return new ArrayList<>(messages.values());
-		//return Response.ok(new GenericEntity<List<String>>(texts) {}).build();
+	@Path("list")
+	public Collection<Message> listAll() {
+		return messages.values();
 	}
 	
 	@GET
 	public Response list() {
-		return Response.ok(new GenericEntity<List<Message>>(listAll()) {}).build();
+		return Response.ok(new GenericEntity<Collection<Message>>(listAll()) {})
+				       .build();
+//		return Response.ok(messages.values()).build();
 	}	
+
+	@GET
+	@Path("array")
+	public Message[] listArray() {
+		return messages.values().toArray(new Message[0]);
+	}
 
 	@PUT
 	@Path("/{id:[0-9][0-9]*}")
